@@ -1,19 +1,17 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react';
+import React, { useContext } from 'react';
 import NavBar from './NavBar';
 import { useParams } from 'react-router-dom';
 import {albumsData, assets, songsData } from '../assets/assets';
+import { PlayerContext } from './Context/PlayerContext';
 
 const DisplayAlbum = () => {
   const { id } = useParams();
-  console.log(id);
-
-  // Check if albumData exists to avoid accessing undefined properties
   const albumData = albumsData[id];
-  if (!albumData) {
-    return <div>Album not found</div>;
-  }
-  console.log(albumData);
+  // eslint-disable-next-line no-unused-vars
+  const {playwithId}=useContext(PlayerContext);
+  
+ 
 
   // Filter songsData to display only songs related to the current album
   // const songsdata = songsData.filter(song => song.albumId === id);
@@ -48,9 +46,9 @@ const DisplayAlbum = () => {
       </div>
       <hr />
 
-      {/* Display list of songs */}
+      
       {songsData.map((item,index) => (
-        <div className='grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 items-center text-[#a7a7a7] hover:bg ' key={index}>
+        <div onClick={()=>playwithId(item.id)} className='grid grid-cols-3 sm:grid-cols-4 gap-2 p-2 items-center text-[#a7a7a7] hover:bg ' key={index}>
         
           <p className='text-white'><b className='mr-4  text-[#a7a7a7]'>{index+1}
 

@@ -1,10 +1,13 @@
 // eslint-disable-next-line no-unused-vars
-import React from 'react'
+import React, { useContext } from 'react'
+import { PlayerContext } from './Context/PlayerContext';
 
-// eslint-disable-next-line react/prop-types, no-unused-vars
+// eslint-disable-next-line react/prop-types, 
 const SongsItem = ({name,image, desc,id}) => {
+
+  const {playwithId}=useContext(PlayerContext);
   return (
-    <div className='min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]'>
+    <div onClick={()=>playwithId(id)}     className='min-w-[180px] p-2 px-3 rounded cursor-pointer hover:bg-[#ffffff26]'>
       <img className='rounded' alt='' src={image}/>
       <p className='font-bold mt-2 mb-1'>
         {name}

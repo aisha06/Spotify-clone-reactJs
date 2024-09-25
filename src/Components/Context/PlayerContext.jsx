@@ -9,7 +9,7 @@ const PlayerContextProvider = (props) => {
   const audioRef = useRef(null);
 
   // State for tracking the current song and play status
-  const [track, setTrack] = useState(songsData[0]);
+  const [track, setTrack] = useState(songsData[2]);
   const [playStatus, setPlayerStatus] = useState(false);
   const [time, setTime] = useState({
     currentTime: {
@@ -37,13 +37,48 @@ const PlayerContextProvider = (props) => {
       setPlayerStatus(false);
     }
   };
+  const playwithId = async (id)=>{
+    await setTrack(songsData[id]);
+    await audioRef.current.play();
+    setPlayerStatus(true);
+
+  }
+  const prev=async()=>{
+    if(track.id>0){
+      await setTrack(songsData[track.id-1]);
+      await audioRef.current.play();
+      setPlayerStatus(true);
+      
+      
+
+    }
+  }
+  const next=async()=>{
+    if(track.id < songsData.length-1){
+      await setTrack(songsData[track.id+1]);
+      await audioRef.current.play();
+      setPlayerStatus(true);
+      
+      
+
+    }
+  }
+
 
   // Refs for seek bar
   const seekBg = useRef();
   const seekBar = useRef();
 
+const seekSong=async(e)=>{
+  audioRef.current.currentTime=((e.nativeEvent.offsetX / seekBg.current.offsetWidth)*audioRef.current.duration);
+
+}
+
+
+
   // Context value to be provided to the components
   const contextValue = {
+   
     audioRef,
     seekBg,
     seekBar,
@@ -55,27 +90,10 @@ const PlayerContextProvider = (props) => {
     setTime,
     play,
     pause,
+    playwithId,
+    prev,next, seekSong,
   };
-  // useEffect(()=>{
-  //   // setTimeout(()=>{
-  //   //   audioRef.current.ontimeupdate=()=>{
-  //   //     setTime({
-  //   //       currentTime: {
-  //   //         second: Math.floor(audioRef.current.currentTime  % 60),
-  //   //         minute:Math.floor(audioRef.current.currentTime / 60),
-  //   //       },
-  //   //       totalTime: {
-  //   //         second: Math.floor(audioRef.current.duration % 60),
-  //   //         minute:Math.floor(audioRef.current.duration / 60),
-  //   //       },
-
-  //   //     })
-  //   //   }
-        
-  //   // },1000)
-
-  // },[audioRef])
-
+  
   return (
     <PlayerContext.Provider value={contextValue}>
       {props.children}
